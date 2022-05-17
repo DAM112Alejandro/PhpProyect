@@ -10,8 +10,10 @@
             <hr />
             <p><?php echo $item['descProducto']; ?></p>
             <br />
+            <?php if ($_SESSION['user_data']['rol'] == "admin") : ?>
             <a class="btn btn-primary text-center" href="/shares/edit/<?=$item['idProductos']?>">Editar</a>
             <a class="btn btn-danger" href="/shares/delete/<?=$item['idProductos']?>">Eliminar</a>
+            <?php endif; ?>
         </div>
 	<?php endforeach; ?>
 </div>

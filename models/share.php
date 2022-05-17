@@ -26,6 +26,8 @@ class ShareModel extends Model
                 $this->bind(':StockProducto', $post['StockProducto']);
                 $this->bind(':Categorias_idCategorias', $post['Categorias_idCategorias']);
                 $this->execute();
+                
+                header('Location: '.ROOT_URL.'shares');
             }
         }
         return;
@@ -36,11 +38,7 @@ class ShareModel extends Model
         // Sanitize POST
         $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         //var_dump($post);
-        if ($post) {
-            if ( !isset($post['idProductos']) || !isset($post['nombreProducto']) || !isset($post['precioProducto']) || !isset($post['descProducto']) || !isset($post['StockProducto']) || !isset($post['Categorias_idCategorias'])) {
-                Messages::setMsg('error', 'error');
-                return;
-            } else {
+        if (isset($post['submit'])) {
                 // Insert into MySQL
                 $this->query("UPDATE productos SET  nombreProducto=:nombreProducto, precioProducto=:precioProducto, descProducto=:descProducto, StockProducto=:StockProducto, Categorias_idCategorias=:Categorias_idCategorias 
                 WHERE idProductos=:idProductos");
@@ -51,33 +49,33 @@ class ShareModel extends Model
                 $this->bind(':Categorias_idCategorias', $post['Categorias_idCategorias']);
                 $this->bind(':idProductos', $post['idProductos']);
                 $this->execute();
+
+                header('Location: '.ROOT_URL.'shares');
             }
+        else{
+            $this->query('SELECT nombreProductos,precioProducto,descProducto,Stockproducto FROM productos WHERE idProductos = :idProductos');
+            $this->bind(':idProductos', $_GET['idProductos']);
+            $row = $this->single();
+            return $row;
         }
         return;
     }
 
     public function delete()
     {
-        // $id = $_GET['idProductos'];
-        $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+         $id = $_GET['idProductos'];
 
         // var_dump($post['idProductos']);
 
-        if (!isset($post)) {
+        if (!isset($id)) {
             return;
         } else {
-            $this->query("DELETE FROM productos WHERE idProductos='{$post['idProductos']}'");
-            
+            $this->query("DELETE FROM productos WHERE idProductos=:idProductos");
+            $this->bind(':idProductos',$_GET['idProductos']);
             $this->execute();
         }
 
-        return;
+        header('Location '.ROOT_URL.'shares');
     }
-    public function getById()
-    {
-        $this->query('SELECT * FROM productos WHERE idtactica=?');
-        $this->bind(1,$_GET['id']);
-        $rows = $this->resultSet();
-        return $rows;
-    }
+  
 }

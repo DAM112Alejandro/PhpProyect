@@ -45,7 +45,7 @@ class UserModel extends Model
                 $_SESSION['is_logged_in'] = true;
                 $_SESSION['user_data'] = array(
                     "id"    => $row['id'],
-                    "name"    => $row['name'],
+                    "name"    => $row['nombre'],
                     "email"    => $row['email']
                 );
                 header('Location: '.ROOT_URL.'shares');

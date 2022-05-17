@@ -17,14 +17,13 @@ protected function edit(){
 		header('Location: '.ROOT_URL.'shares/edit');
 	}
 	$viewmodel = new ShareModel();
-	$this->returnView($viewmodel->edit(), true);
+	$row=$viewmodel->edit();
+	$this->returnView($row, true);
 }
 
 protected function delete(){
 	if(!isset($_SESSION['is_logged_in'])){
 		header('Location: '.ROOT_URL.'shares/delete');
 	}
-	$viewmodel = new ShareModel();
-	$this->returnView($viewmodel->delete(), true);
 }
 }
